@@ -3,12 +3,16 @@
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 //
 
+#if UNITY_ANDROID && HAVE_GPGS
+#define SOCIAL_ANDROID
+#endif
+
 using System.Text;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 #if UNITY_IOS
 using UnityEngine.SocialPlatforms.GameCenter;
-#elif UNITY_ANDROID
+#elif SOCIAL_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 #endif
@@ -27,7 +31,7 @@ public class SocialManager : Singleton<SocialManager>
         }
         else
         {
-#if UNITY_ANDROID
+#if SOCIAL_ANDROID
             var config = new PlayGamesClientConfiguration.Builder().Build();
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.InitializeInstance(config);
@@ -72,7 +76,7 @@ public class SocialManager : Singleton<SocialManager>
         Debug.Log("SocialManager.ShowLeaderboard call (no logic for editor)");
 #elif UNITY_IOS
         Social.ShowLeaderboardUI();
-#elif UNITY_ANDROID
+#elif SOCIAL_ANDROID
         PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardID);
 #else
         Debug.LogWarningFormat("SocialManager.ShowLeaderboard not implemented on '{0}'", Application.platform);

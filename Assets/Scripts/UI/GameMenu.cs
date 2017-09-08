@@ -23,7 +23,9 @@ public class GameMenu : BaseMenu
     Transform LifesRoot = null;
     [SerializeField]
     GameObject LifesPrefab = null;
-
+    
+    [SerializeField]
+    MobileUI MobileUI = null;
 
     bool HighScoreWasShown;
 
@@ -53,6 +55,13 @@ public class GameMenu : BaseMenu
     }
     #endregion
 
+
+    public MobileUI SpawnMobileUI()
+    {
+        // Not spawning for this demo, just activating
+        MobileUI.gameObject.SetActive(true);
+        return MobileUI;
+    }
 
     void CreateLifes()
     {

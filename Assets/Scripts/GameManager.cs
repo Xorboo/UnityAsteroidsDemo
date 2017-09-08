@@ -14,7 +14,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField]
     BaseMenu StartingMenu = null;
     [SerializeField]
-    BaseMenu GameMenu = null;
+    GameMenu GameMenu = null;
     [SerializeField]
     GameObject LevelObject = null;
 
@@ -66,5 +66,10 @@ public class GameManager : Singleton<GameManager>
                 Debug.LogErrorFormat("Unsupported game state: {0}", state);
                 break;
         }
+    }
+
+    public MobileUI SpawnMobileUI()
+    {
+        return GameMenu.SpawnMobileUI();
     }
 }

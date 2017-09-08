@@ -7,12 +7,12 @@ using Rand = UnityEngine.Random;
 
 public class PlayerInputPC : IPlayerInput
 {
-    public void Init()
+    public virtual void Init()
     {
     }
 
 
-    public MovementData GetMoveInput()
+    public virtual MovementData GetMoveInput()
     {
         var data = new MovementData()
         {
@@ -22,7 +22,7 @@ public class PlayerInputPC : IPlayerInput
         return data;
     }
 
-    public bool IsShooting()
+    public virtual bool IsShooting()
     {
         return Input.GetAxis("Fire") > 0;
     }

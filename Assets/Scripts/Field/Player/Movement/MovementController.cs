@@ -28,6 +28,7 @@ public class MovementController : ScriptableObject
     public void Init(PlayerMovement ship)
     {
         PlayerInput = CreatePlayerInput();
+        PlayerInput.Init();
         Clear(ship);
     }
 
@@ -73,7 +74,7 @@ public class MovementController : ScriptableObject
 #if UNITY_STANDALONE
         return new PlayerInputPC();
 #elif UNITY_ANDROID || UNITY_IOS
-        return new PlayerInputPC();
+        return new PlayerInputMobile();
 #else
         Debug.LogErrorFormat("No input for target platform: {0}, using default", Application.platform);
         return new PlayerInputPC();
