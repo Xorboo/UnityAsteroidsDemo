@@ -41,7 +41,7 @@ public class MovementController : ScriptableObject
         transform.rotation = Quaternion.identity;
     }
 
-    public void MoveShip(PlayerMovement ship)
+    public MovementData MoveShip(PlayerMovement ship)
     {
         var movement = PlayerInput.GetMoveInput();
         float dt = TimeManager.DeltaTime;
@@ -66,6 +66,8 @@ public class MovementController : ScriptableObject
 
         transform.Translate(Velocity * dt, Space.World);
         transform.Rotate(Vector3.forward, -movement.Rotation * RotationSpeed * dt);
+
+        return movement;
     }
 
 

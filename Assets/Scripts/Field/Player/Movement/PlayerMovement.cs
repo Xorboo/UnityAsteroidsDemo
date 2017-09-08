@@ -12,6 +12,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     MovementController Movement = null;
 
+    [Space(10)]
+    [SerializeField]
+    Thrusters ThrustersParticles = null;
+
+
     PlayerShooting PlayerShooting;
 
 
@@ -27,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        Movement.MoveShip(this);
+        var movement = Movement.MoveShip(this);
+        ThrustersParticles.Update(movement);
     }
     #endregion
 
@@ -36,5 +42,27 @@ public class PlayerMovement : MonoBehaviour
     {
         Movement.Clear(this);
         PlayerShooting.Clear();
+    }
+
+
+    [Serializable]
+    class Thrusters
+    {
+        public ParticleSystem Main = null;
+        public ParticleSystem Left = null;
+        public ParticleSystem Right = null;
+
+        public void Update(MovementData movement)
+        {
+            SetEmission(Main, movement.Acceleration > 0f);
+            SetEmission(Left, movement.Rotation > 0f);
+            SetEmission(Right, movement.Rotation < 0f);
+        }
+
+        void SetEmission(ParticleSystem ps, bool enabled)
+        {
+            var em = ps.emission;
+            em.enabled = enabled;
+        }
     }
 }

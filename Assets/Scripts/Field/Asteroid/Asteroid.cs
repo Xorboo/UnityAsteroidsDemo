@@ -14,6 +14,8 @@ public class Asteroid : MonoBehaviour
 {
     [SerializeField]
     AudioClip DeathClip = null;
+    [SerializeField]
+    GameObject ParticlesPrefab = null;
 
 
     #region Component getters
@@ -135,11 +137,15 @@ public class Asteroid : MonoBehaviour
         {
             IsDead = true;
 
-            AsteroidSpawner.Instance.AsteroidDestroyed(this);
+            if (MatchManager.Instance.IsPlaying)
+            {
+                AsteroidSpawner.Instance.AsteroidDestroyed(this);
 
-            // TODO Play sprite animation there if needed
-            Collider.enabled = false;
-            SoundKit.Instance.PlayOneShot(DeathClip);
+                // TODO Play sprite animation there if needed
+                Collider.enabled = false;
+                SoundKit.Instance.PlayOneShot(DeathClip);
+                ParticlesPrefab.Spawn(transform.position, Quaternion.identity, AsteroidSpawner.Instance.ParticlesRoot);
+            }
             gameObject.Recycle();
         }
     }

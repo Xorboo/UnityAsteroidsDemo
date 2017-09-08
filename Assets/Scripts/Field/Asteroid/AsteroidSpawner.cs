@@ -15,6 +15,7 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     SpawnerParameters Parameters = null;
     [SerializeField]
     Transform AsteroidsRoot = null;
+    public Transform ParticlesRoot = null;
 
     // We can change this to store asteroids objects if needed
     int AsteroidsAmount;
@@ -35,7 +36,8 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
         Parameters.Reset();
 
         AsteroidsAmount = 0;
-        AsteroidsRoot.RemoveAllChildren();
+        AsteroidsRoot.RecycleAllChildren();
+        ParticlesRoot.RecycleAllChildren();
         StopAllCoroutines();
     }
 
@@ -60,18 +62,15 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         AsteroidsAmount--;
 
-        if (MatchManager.Instance.IsPlaying)
+        var parameters = asteroid.Parameters;
+        OnAsteroidDestroyed(asteroid);
+
+        AsteroidsAmount += parameters.SpawnChildren(asteroid);
+
+        if (AsteroidsAmount == 0 || AsteroidsRoot.childCount == 0)
         {
-            var parameters = asteroid.Parameters;
-            OnAsteroidDestroyed(asteroid);
-
-            AsteroidsAmount += parameters.SpawnChildren(asteroid);
-
-            if (AsteroidsAmount == 0 || AsteroidsRoot.childCount == 0)
-            {
-                Assert.IsTrue(AsteroidsAmount == 0, "No asteroid objects found, but counter is > 0");
-                SpawnWave();
-            }
+            Assert.IsTrue(AsteroidsAmount == 0, "No asteroid objects found, but counter is > 0");
+            SpawnWave();
         }
     }
 }

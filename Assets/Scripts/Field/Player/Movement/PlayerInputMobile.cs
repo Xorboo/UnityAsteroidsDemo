@@ -29,8 +29,10 @@ public class PlayerInputMobile : PlayerInputPC
 #if UNITY_EDITOR
         // Enabling keyboard controls while in editor, so we can test the game easier
         var keyboardData = base.GetMoveInput();
-        data.Acceleration = Mathf.Max(data.Acceleration, keyboardData.Acceleration);
-        data.Rotation = Mathf.Max(data.Rotation, keyboardData.Rotation);
+        if (!Mathf.Approximately(keyboardData.Acceleration, 0f))
+            data.Acceleration = keyboardData.Acceleration;
+        if (!Mathf.Approximately(keyboardData.Rotation, 0f))
+            data.Rotation = keyboardData.Rotation;
 #endif
         return data;
     }
