@@ -13,15 +13,30 @@ public class MatchManager : Singleton<MatchManager>
     public int InitialHealth = 3;
     [SerializeField]
     PlayerMovement Player = null;
+    [SerializeField]
+    GameOverPopup GameOverPopup = null;
 
+    [Space(10)]
+    [SerializeField, Range(0f, 10f), Tooltip("Pause after player death")]
+    float RestartPause = 2f;
+    
+    public bool IsPlaying { get; private set; }
 
     #region Behaviours
+    new void Awake()
+    {
+        base.Awake();
+
+        IsPlaying = false;
+    }
     #endregion
 
 
     public void StartMatch()
     {
-        ResetField();
+        StopAllCoroutines();
+        
+        StartRound();
 
         ScoreManager.Instance.StartMatch();
         PlayerHealth.Value = InitialHealth;
@@ -29,7 +44,7 @@ public class MatchManager : Singleton<MatchManager>
 
     public void StopMatch()
     {
-        ResetField();
+        IsPlaying = false;
     }
 
     public void PlayerDied()
@@ -38,17 +53,38 @@ public class MatchManager : Singleton<MatchManager>
 
         if (PlayerHealth.Value > 0)
         {
-            ResetField();
+            StartRound(true);
         }
         else
         {
-            GameManager.Instance.SetState(GameManager.GameState.Menu);
+            // Resetting player to remove bullets
+            Player.ResetPlayer();
+            Player.gameObject.SetActive(false);
+            // Showing popup while asteroids flying in the background
+            MenuManager.Instance.ShowPopup(GameOverPopup);
         }
     }
 
-    void ResetField()
+
+    void StartRound(bool hidePlayer = false)
     {
-        AsteroidSpawner.Instance.StartSpawn();
+        StartCoroutine(RoundRoutine(hidePlayer));
+    }
+
+    IEnumerator RoundRoutine(bool hidePlayer)
+    {
+        // Clear field from previous round
+        IsPlaying = false;
         Player.ResetPlayer();
+        Player.gameObject.SetActive(!hidePlayer);
+        AsteroidSpawner.Instance.Clear();
+
+        yield return new WaitForSeconds(RestartPause);
+
+        // Start new wave
+        IsPlaying = true;
+        if (hidePlayer)
+            Player.gameObject.SetActive(true);
+        AsteroidSpawner.Instance.StartSpawn();
     }
 }

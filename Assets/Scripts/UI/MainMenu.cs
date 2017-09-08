@@ -15,7 +15,7 @@ public class MainMenu : BaseMenu
     #region Behaviours
     void OnEnable()
     {
-        HighScore.text = "High Score: " + ScoreManager.Instance.HighScore.ToString();
+        HighScore.text = String.Format("High Score: {0}", ScoreManager.Instance.HighScore);
     }
     #endregion
 

@@ -59,18 +59,12 @@ public class GameManager : Singleton<GameManager>
             case GameState.Game:
                 MenuManager.Instance.ShowMenu(GameMenu);
                 LevelObject.SetActive(true);
-                StartMatch();
+                MatchManager.Instance.StartMatch();
                 break;
 
             default:
                 Debug.LogErrorFormat("Unsupported game state: {0}", state);
                 break;
         }
-    }
-
-
-    void StartMatch()
-    {
-        MatchManager.Instance.StartMatch();
     }
 }

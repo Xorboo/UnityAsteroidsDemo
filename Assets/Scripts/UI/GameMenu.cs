@@ -59,7 +59,7 @@ public class GameMenu : BaseMenu
 
     void LifesChanged(int lifes)
     {
-        Debug.Log("LIFES: " + lifes);
+        Debug.Log("Player lifes: " + lifes);
         Assert.IsTrue(lifes <= LifesRoot.childCount, "Player has more lifes than spawned in UI");
 
         for(int i = 0, n = LifesRoot.childCount; i < n; i++)

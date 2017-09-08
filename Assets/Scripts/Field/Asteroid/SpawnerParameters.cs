@@ -14,13 +14,16 @@ public class SpawnerParameters : ScriptableObject
     Asteroid Prefab = null;
 
     [Space(10)]
-    [SerializeField, Range(1, 10)]
+    [SerializeField, Range(1, 10), Tooltip("Amount of asteroids in initial wave")]
     int StartingWaveSize = 4;
-    [SerializeField, Range(0, 10)]
+    [SerializeField, Range(0, 10), Tooltip("Increase of asteroids for each wave")]
     int WaveSizeIncrease = 2;
+    [Range(0f, 5f), Tooltip("Pause before wave spawn")]
+    public float WaveSpawnPause = 2f;
+
 
     Camera MainCamera;
-    int CurrentWave;
+    public int CurrentWave { get; private set; }
 
     #region Behaviours
     void OnEnable()

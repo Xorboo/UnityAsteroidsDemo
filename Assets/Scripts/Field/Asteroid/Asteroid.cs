@@ -102,7 +102,7 @@ public class Asteroid : MonoBehaviour
                 break;
 
             case Layers.Player:
-                MatchManager.Instance.PlayerDied();
+                // Checked in PlayerBody
                 break;
 
             default:

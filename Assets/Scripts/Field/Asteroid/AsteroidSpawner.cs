@@ -25,12 +25,17 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
 
     public void StartSpawn()
     {
+        Clear();
+        SpawnWave();
+    }
+
+    public void Clear()
+    {
         Parameters.Reset();
 
         AsteroidsAmount = 0;
         AsteroidsRoot.RemoveAllChildren();
-
-        SpawnWave();
+        StopAllCoroutines();
     }
 
     public void SpawnAsteroid(AsteroidParameters parameters, Vector3 position)
@@ -40,6 +45,13 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
 
     void SpawnWave()
     {
+        StartCoroutine(SpawnRoutine());
+    }
+
+    IEnumerator SpawnRoutine()
+    {
+        if (Parameters.CurrentWave > 0)
+            yield return new WaitForSeconds(Parameters.WaveSpawnPause);
         AsteroidsAmount += Parameters.SpawnWave(AsteroidsRoot);
     }
 
@@ -47,12 +59,15 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
     {
         AsteroidsAmount--;
 
-        var parameters = asteroid.Parameters;
-        OnAsteroidDestroyed(asteroid);
+        if (MatchManager.Instance.IsPlaying)
+        {
+            var parameters = asteroid.Parameters;
+            OnAsteroidDestroyed(asteroid);
 
-        AsteroidsAmount += parameters.SpawnChildren(asteroid);
+            AsteroidsAmount += parameters.SpawnChildren(asteroid);
 
-        if (AsteroidsAmount == 0)
-            SpawnWave();
+            if (AsteroidsAmount == 0)
+                SpawnWave();
+        }
     }
 }

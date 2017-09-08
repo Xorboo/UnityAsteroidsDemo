@@ -42,6 +42,21 @@ public static class TransformExtensions
         }
     }
 
+    public static void RecycleAllChildren(this Transform t)
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogError("Recycle only works in play mode");
+            return;
+        }
+
+        for (int i = t.childCount - 1; i >= 0; i--)
+        {
+            var child = t.GetChild(i).gameObject;
+            child.Recycle();
+        }
+    }
+
 
     #region Local Position
     public static void SetLocalPosition(this Transform t, float x = 0, float y = 0, float z = 0)

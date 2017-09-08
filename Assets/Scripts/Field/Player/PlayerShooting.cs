@@ -38,7 +38,7 @@ public class PlayerShooting : MonoBehaviour
     
     public void Clear()
     {
-        BulletsRoot.RemoveAllChildren();
+        BulletsRoot.RecycleAllChildren();
     }
 
     public void SetInput(IPlayerInput playerInput)
