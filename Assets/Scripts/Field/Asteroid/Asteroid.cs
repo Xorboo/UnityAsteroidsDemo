@@ -12,6 +12,10 @@ using UnityConstants;
 [RequireComponent(typeof(ScreenWrap))]
 public class Asteroid : MonoBehaviour
 {
+    [SerializeField]
+    AudioClip DeathClip = null;
+
+
     #region Component getters
     public SpriteRenderer Renderer
     {
@@ -135,6 +139,7 @@ public class Asteroid : MonoBehaviour
 
             // TODO Play sprite animation there if needed
             Collider.enabled = false;
+            SoundKit.Instance.PlayOneShot(DeathClip);
             gameObject.Recycle();
         }
     }

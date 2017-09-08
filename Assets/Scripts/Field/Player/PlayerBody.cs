@@ -9,6 +9,9 @@ using UnityConstants;
 
 public class PlayerBody : MonoBehaviour
 {
+    public Action OnPlayerDied = delegate { };
+
+
     #region Behaviours
     void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,11 +22,11 @@ public class PlayerBody : MonoBehaviour
                 var bullet = collision.gameObject.GetComponent<Bullet>();
                 Assert.IsNotNull(bullet, "Cant find bullet component in collision");
                 if (!bullet.HasTriggered && !bullet.IgnorePlayerCollision)
-                    MatchManager.Instance.PlayerDied();
+                    OnPlayerDied();
                 break;
 
             case Layers.Enemy:
-                MatchManager.Instance.PlayerDied();
+                OnPlayerDied();
                 break;
 
             default:

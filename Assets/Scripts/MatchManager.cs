@@ -12,14 +12,14 @@ public class MatchManager : Singleton<MatchManager>
     [Range(1, 10), Tooltip("Initial player health")]
     public int InitialHealth = 3;
     [SerializeField]
-    PlayerMovement Player = null;
+    Player Player = null;
     [SerializeField]
     GameOverPopup GameOverPopup = null;
 
     [Space(10)]
     [SerializeField, Range(0f, 10f), Tooltip("Pause after player death")]
     float RestartPause = 2f;
-    
+
     public bool IsPlaying { get; private set; }
 
     #region Behaviours
@@ -35,7 +35,7 @@ public class MatchManager : Singleton<MatchManager>
     public void StartMatch()
     {
         StopAllCoroutines();
-        
+
         StartRound();
 
         ScoreManager.Instance.StartMatch();
@@ -77,6 +77,8 @@ public class MatchManager : Singleton<MatchManager>
         IsPlaying = false;
         Player.ResetPlayer();
         Player.gameObject.SetActive(!hidePlayer);
+        if (!hidePlayer)
+            Player.StartMatch();
         AsteroidSpawner.Instance.Clear();
 
         yield return new WaitForSeconds(RestartPause);
@@ -84,7 +86,10 @@ public class MatchManager : Singleton<MatchManager>
         // Start new wave
         IsPlaying = true;
         if (hidePlayer)
+        {
             Player.gameObject.SetActive(true);
+            Player.StartMatch();
+        }
         AsteroidSpawner.Instance.StartSpawn();
     }
 }

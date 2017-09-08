@@ -44,9 +44,12 @@ public class GameMenu : BaseMenu
 
     void OnDisable()
     {
-        MatchManager.Instance.PlayerHealth.OnChanged -= LifesChanged;
-        ScoreManager.Instance.Score.OnChanged -= ScoreChanged;
-        ScoreManager.Instance.OnHighScoreChanged -= HighScoreChanged;
+        if (MatchManager.Exists())
+            MatchManager.Instance.PlayerHealth.OnChanged -= LifesChanged;
+        if (ScoreManager.Exists())
+            ScoreManager.Instance.Score.OnChanged -= ScoreChanged;
+        if (ScoreManager.Exists())
+            ScoreManager.Instance.OnHighScoreChanged -= HighScoreChanged;
     }
     #endregion
 

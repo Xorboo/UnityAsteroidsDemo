@@ -18,10 +18,17 @@ public class ShootingParameters : ScriptableObject
     [SerializeField, Range(0f, 10f)]
     float BulletLifeTime = 3f;
 
+    [Space(10)]
+    [SerializeField]
+    AudioClip ShootClip = null;
+
+
     public Bullet SpawnBullet(Transform spawnPoint, Transform root)
     {
         var bullet = BulletPrefab.Spawn(spawnPoint.position, spawnPoint.rotation, root);
         bullet.Init(BulletSpeed, BulletLifeTime);
+
+        SoundKit.Instance.PlayOneShot(ShootClip);
         return bullet;
     }
 }

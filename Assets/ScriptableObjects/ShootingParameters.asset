@@ -16,3 +16,4 @@ MonoBehaviour:
     type: 2}
   BulletSpeed: 12
   BulletLifeTime: 3
+  ShootClip: {fileID: 8300000, guid: a23097d2d69c6ad47a6463bac6904ed3, type: 3}

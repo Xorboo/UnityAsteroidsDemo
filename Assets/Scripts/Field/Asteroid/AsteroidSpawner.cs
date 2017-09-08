@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Rand = UnityEngine.Random;
 
 
@@ -66,8 +67,11 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
 
             AsteroidsAmount += parameters.SpawnChildren(asteroid);
 
-            if (AsteroidsAmount == 0)
+            if (AsteroidsAmount == 0 || AsteroidsRoot.childCount == 0)
+            {
+                Assert.IsTrue(AsteroidsAmount == 0, "No asteroid objects found, but counter is > 0");
                 SpawnWave();
+            }
         }
     }
 }

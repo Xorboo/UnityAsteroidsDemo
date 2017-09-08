@@ -14,20 +14,14 @@ using UnityEngine.SceneManagement;
 
 public class SoundKit : Singleton<SoundKit>
 {
-    [SerializeField]
-    [Tooltip("Anytime you play a sound and set the scaledVolume it is multiplied by this value")]
-    float _SoundVolume = 1f;
-    [SerializeField]
+    [SerializeField, Tooltip("Anytime you play a sound and set the scaledVolume it is multiplied by this value")]
     float DefaultSoundVolume = 1f;
-    [SerializeField]
+    [SerializeField, Tooltip("Volume which will be set after unmuting")]
     float UnmutedSoundVolume = 1f;
-
-    [SerializeField]
-    [Tooltip("Anytime you play a music and set the scaledVolume it is multiplied by this value")]
-    float _MusicVolume = 1f;
-    [SerializeField]
+    
+    [SerializeField, Tooltip("Anytime you play a music and set the scaledVolume it is multiplied by this value")]
     float DefaultMusicVolume = 1f;
-    [SerializeField]
+    [SerializeField, Tooltip("Volume which will be set after unmuting")]
     float UnmutedMusicVolume = 1f;
 
     public static readonly string SoundVolumePrefs = "PLAYER_SOUND_VOLUME";
@@ -331,6 +325,7 @@ public class SoundKit : Singleton<SoundKit>
                 OneShotSound.AudioSource.volume = _SoundVolume;
         }
     }
+    float _SoundVolume = 1f;
 
     public bool MusicEnabled
     {
@@ -349,7 +344,8 @@ public class SoundKit : Singleton<SoundKit>
                 BackgroundSound.AudioSource.volume = BackgroundVolume * _MusicVolume;
         }
     }
-    
+    float _MusicVolume = 1f;
+
     #endregion
 
     #region SKSound inner class
