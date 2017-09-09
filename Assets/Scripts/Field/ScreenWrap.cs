@@ -12,6 +12,7 @@ public class ScreenWrap : MonoBehaviour
     float ExtraPadding = 0f;
 
     Rect Borders;
+    IVector2 Resolution;
 
 
     #region Behaviours
@@ -23,9 +24,38 @@ public class ScreenWrap : MonoBehaviour
 
     void Update()
     {
+        CheckScreenUpdate();
+        CheckWrapping();
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            UpdateBorders();
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMin), new Vector3(Borders.xMax, Borders.yMin));
+        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMax), new Vector3(Borders.xMax, Borders.yMax));
+        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMin), new Vector3(Borders.xMin, Borders.yMax));
+        Gizmos.DrawLine(new Vector3(Borders.xMax, Borders.yMin), new Vector3(Borders.xMax, Borders.yMax));
+    }
+    #endregion
+
+
+    public void SetPadding(float padding)
+    {
+        Assert.IsTrue(padding > 0f, "Wrapping object padding should be > 0");
+
+        ExtraPadding = padding;
+        UpdateBorders();
+    }
+
+
+    void CheckWrapping()
+    {
         bool isOutside = false;
         Vector3 position = transform.position;
-        
+
         if (position.x <= Borders.xMin)
         {
             position.x = Borders.xMax;
@@ -55,30 +85,17 @@ public class ScreenWrap : MonoBehaviour
         }
     }
 
-    void OnDrawGizmosSelected()
+    void CheckScreenUpdate()
     {
-        if (!Application.isPlaying)
+        var res = Screen.currentResolution;
+        if (Screen.width != Resolution.x || Screen.height != Resolution.y)
             UpdateBorders();
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMin), new Vector3(Borders.xMax, Borders.yMin));
-        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMax), new Vector3(Borders.xMax, Borders.yMax));
-        Gizmos.DrawLine(new Vector3(Borders.xMin, Borders.yMin), new Vector3(Borders.xMin, Borders.yMax));
-        Gizmos.DrawLine(new Vector3(Borders.xMax, Borders.yMin), new Vector3(Borders.xMax, Borders.yMax));
-    }
-    #endregion
-
-
-    public void SetPadding(float padding)
-    {
-        Assert.IsTrue(padding > 0f, "Wrapping object padding should be > 0");
-
-        ExtraPadding = padding;
-        UpdateBorders();
     }
 
     void UpdateBorders()
     {
+        Resolution = new IVector2(Screen.width, Screen.height);
+
         Vector3 padding = new Vector3(ExtraPadding, ExtraPadding, 0f);
 
         var camera = Camera.main;
