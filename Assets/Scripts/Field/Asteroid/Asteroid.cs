@@ -15,6 +15,8 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     AudioClip DeathClip = null;
     [SerializeField]
+    AudioClip DamageClip = null;
+    [SerializeField]
     GameObject ParticlesPrefab = null;
 
 
@@ -68,8 +70,18 @@ public class Asteroid : MonoBehaviour
         get { return _Health; }
         set
         {
+            bool isDamaged = value < _Health;
+
             _Health = value;
-            if (_Health <= 0)
+            if (_Health > 0)
+            {
+                if (isDamaged)
+                {
+                    SoundKit.Instance.PlayOneShot(DamageClip);
+                    Highlight();
+                }
+            }
+            else
                 Die();
         }
     }
@@ -77,14 +89,30 @@ public class Asteroid : MonoBehaviour
 
     bool IsDead;
 
+    // Highlighting on recieving damage
+    [SerializeField]
+    float FlashTime = 0.2f;
+    Coroutine FlashRoutine;
+    int HighlightID;
+
 
     public Vector3 Velocity { get; set; }
     public float RotationVelocity { get; set; }
 
     public AsteroidParameters Parameters { get; private set; }
-    
+
 
     #region Behaviours
+    void Awake()
+    {
+        HighlightID = Shader.PropertyToID("_HighlightAmount");
+    }
+
+    void OnEnable()
+    {
+        StopHighlight();
+    }
+
     void Update()
     {
         float dt = TimeManager.DeltaTime;
@@ -149,4 +177,31 @@ public class Asteroid : MonoBehaviour
             gameObject.Recycle();
         }
     }
+
+
+    #region Highlighting
+    void Highlight()
+    {
+        StopHighlight();
+        FlashRoutine = StartCoroutine(FlashCoroutine());
+    }
+
+    void StopHighlight()
+    {
+        if (FlashRoutine != null)
+        {
+            StopCoroutine(FlashRoutine);
+            FlashRoutine = null;
+
+            Renderer.material.SetFloat(HighlightID, 0f);
+        }
+    }
+
+    IEnumerator FlashCoroutine()
+    {
+        Renderer.material.SetFloat(HighlightID, 1f);
+        yield return new WaitForSeconds(FlashTime);
+        StopHighlight();
+    }
+    #endregion
 }

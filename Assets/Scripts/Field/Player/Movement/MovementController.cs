@@ -73,7 +73,7 @@ public class MovementController : ScriptableObject
 
     IPlayerInput CreatePlayerInput()
     {
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE || UNITY_WEBGL
         return new PlayerInputPC();
 #elif UNITY_ANDROID || UNITY_IOS
         return new PlayerInputMobile();

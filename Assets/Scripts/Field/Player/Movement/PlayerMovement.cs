@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         public ParticleSystem Main = null;
         public ParticleSystem Left = null;
         public ParticleSystem Right = null;
+        
 
         public void Update(MovementData movement)
         {
@@ -58,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
             SetEmission(Left, movement.Rotation > 0f);
             SetEmission(Right, movement.Rotation < 0f);
         }
+
 
         void SetEmission(ParticleSystem ps, bool enabled)
         {

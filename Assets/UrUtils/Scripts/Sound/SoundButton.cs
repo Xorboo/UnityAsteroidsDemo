@@ -22,6 +22,7 @@ public class SoundButton : MonoBehaviour
     }
     #endregion
 
+
     public void ButtonClicked()
     {
         OnButtonClicked(this);

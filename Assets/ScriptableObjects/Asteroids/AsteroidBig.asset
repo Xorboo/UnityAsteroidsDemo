@@ -20,7 +20,7 @@ MonoBehaviour:
   Sprites:
   - {fileID: 21300006, guid: c0b55e9ce8fee904cb80455e59a650a0, type: 3}
   Radius: 0.62
-  Health: 1
+  Health: 2
   Score: 10
   DestroySpawner:
     Child: {fileID: 11400000, guid: f1ee9dd71be27104ca5ec434fd3ca50f, type: 2}

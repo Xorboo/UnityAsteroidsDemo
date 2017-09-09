@@ -23,7 +23,7 @@ public class MobileUI : MonoBehaviour
         return new MovementData
         {
             Acceleration = IsUp ? 1 : 0,
-            Rotation = IsRight ? 1 : (IsLeft ? 1 : 0)
+            Rotation = IsRight ? 1 : (IsLeft ? -1 : 0)
         };
     }
 

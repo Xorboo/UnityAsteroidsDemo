@@ -91,8 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DeathClip: {fileID: 8300000, guid: 292432fd85144bf489d3c5369d7584a1, type: 3}
+  DamageClip: {fileID: 8300000, guid: e728ab44d7890a246b156510f966660f, type: 3}
   ParticlesPrefab: {fileID: 1305124658899212, guid: abdcff2d687aea4439b466556eb25f92,
     type: 2}
+  FlashTime: 0.2
 --- !u!114 &114969459271119230
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,7 +120,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 00882837700546649aec7d3020be6464, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

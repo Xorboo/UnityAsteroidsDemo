@@ -101,4 +101,11 @@ public class GameMenu : BaseMenu
         yield return new WaitForSeconds(HighscoreShowPause);
         HighScoreObject.SetActive(false);
     }
+
+    public override void EscapePressed()
+    {
+        base.EscapePressed();
+
+        GameManager.Instance.SetState(GameManager.GameState.Menu);
+    }
 }

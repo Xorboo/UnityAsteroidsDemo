@@ -9,18 +9,16 @@ public class MatchManager : Singleton<MatchManager>
 {
     public Beep<int> PlayerHealth = new Beep<int>(0);
 
-    [Range(1, 10), Tooltip("Initial player health")]
-    public int InitialHealth = 3;
     [SerializeField]
     Player Player = null;
     [SerializeField]
     GameOverPopup GameOverPopup = null;
-
-    [Space(10)]
-    [SerializeField, Range(0f, 10f), Tooltip("Pause after player death")]
-    float RestartPause = 2f;
+    [SerializeField]
+    MatchParameters Parameters = null;
 
     public bool IsPlaying { get; private set; }
+    public int InitialHealth { get { return Parameters.InitialHealth; } }
+
 
     #region Behaviours
     new void Awake()
@@ -68,6 +66,7 @@ public class MatchManager : Singleton<MatchManager>
 
     void StartRound(bool hidePlayer = false)
     {
+        StopAllCoroutines();
         StartCoroutine(RoundRoutine(hidePlayer));
     }
 
@@ -81,7 +80,7 @@ public class MatchManager : Singleton<MatchManager>
             Player.StartMatch();
         AsteroidSpawner.Instance.Clear();
 
-        yield return new WaitForSeconds(RestartPause);
+        yield return new WaitForSeconds(Parameters.RestartPause);
 
         // Start new wave
         IsPlaying = true;

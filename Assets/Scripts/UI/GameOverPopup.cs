@@ -34,4 +34,12 @@ public class GameOverPopup : BasePopup
         MenuManager.Instance.HidePopup();
         GameManager.Instance.SetState(GameManager.GameState.Menu);
     }
+
+
+    public override void EscapePressed()
+    {
+        base.EscapePressed();
+
+        ExitPressed();
+    }
 }

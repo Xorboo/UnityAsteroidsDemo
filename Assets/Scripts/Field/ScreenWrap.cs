@@ -50,7 +50,9 @@ public class ScreenWrap : MonoBehaviour
         }
 
         if (isOutside)
+        {
             transform.position = position;
+        }
     }
 
     void OnDrawGizmosSelected()
