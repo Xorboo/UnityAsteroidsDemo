@@ -15,7 +15,7 @@ public class ShootingParameters : ScriptableObject
     Bullet BulletPrefab = null;
     [SerializeField, Range(0f, 50f)]
     float BulletSpeed = 12f;
-    [SerializeField, Range(0f, 10f)]
+    [SerializeField, Range(0.01f, 10f)]
     float BulletLifeTime = 3f;
 
     [Space(10)]

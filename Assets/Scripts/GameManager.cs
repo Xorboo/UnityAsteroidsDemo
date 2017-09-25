@@ -41,6 +41,7 @@ public class GameManager : Singleton<GameManager>
     }
     #endregion
 
+
     public void SetState(GameState state)
     {
         var prevState = State;
@@ -68,8 +69,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public MobileUI SpawnMobileUI()
+    public RectTransform RootUI
     {
-        return GameMenu.SpawnMobileUI();
+        get { return GameMenu.RootUI; }
     }
 }

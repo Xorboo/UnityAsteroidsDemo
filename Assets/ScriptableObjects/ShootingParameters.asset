@@ -15,5 +15,5 @@ MonoBehaviour:
   BulletPrefab: {fileID: 114871161262427874, guid: fb7f94929757ee841a55be464b07b071,
     type: 2}
   BulletSpeed: 12
-  BulletLifeTime: 3
+  BulletLifeTime: 1.2
   ShootClip: {fileID: 8300000, guid: a23097d2d69c6ad47a6463bac6904ed3, type: 3}

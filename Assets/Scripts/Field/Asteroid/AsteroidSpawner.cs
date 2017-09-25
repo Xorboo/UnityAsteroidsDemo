@@ -8,6 +8,7 @@ using Rand = UnityEngine.Random;
 
 public class AsteroidSpawner : Singleton<AsteroidSpawner>
 {
+    public Action<int> OnNewWaveSpawned = delegate { };
     public Action<Asteroid> OnAsteroidDestroyed = delegate { };
 
 
@@ -53,9 +54,12 @@ public class AsteroidSpawner : Singleton<AsteroidSpawner>
 
     IEnumerator SpawnRoutine()
     {
+        // Ignore pause on the first way, as we have additional pause in the beginning
         if (Parameters.CurrentWave > 0)
             yield return new WaitForSeconds(Parameters.WaveSpawnPause);
         AsteroidsAmount += Parameters.SpawnWave(AsteroidsRoot);
+
+        OnNewWaveSpawned(Parameters.CurrentWave);
     }
 
     public void AsteroidDestroyed(Asteroid asteroid)

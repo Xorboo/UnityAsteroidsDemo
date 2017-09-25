@@ -8,23 +8,22 @@ using Rand = UnityEngine.Random;
 
 public class PlayerInputMobile : PlayerInputPC
 {
-    MobileUI MobileUI = null;
+    CanvasUIBase UIController = null;
 
 
-    public override void Init()
+    public override void Init(CanvasUIBase uiController)
     {
-        base.Init();
+        base.Init(uiController);
 
-        if (!MobileUI)
-            MobileUI = GameManager.Instance.SpawnMobileUI();
+        UIController = uiController;
     }
 
 
     public override MovementData GetMoveInput()
     {
-        Assert.IsNotNull(MobileUI, "Mobile UI was not instantiated");
+        Assert.IsNotNull(UIController, "Mobile UI was not instantiated");
 
-        var data = MobileUI.GetMovementData();
+        var data = UIController.GetMovementData();
 
 #if UNITY_EDITOR
         // Enabling keyboard controls while in editor, so we can test the game easier
@@ -39,9 +38,9 @@ public class PlayerInputMobile : PlayerInputPC
 
     public override bool IsShooting()
     {
-        Assert.IsNotNull(MobileUI, "Mobile UI was not instantiated");
+        Assert.IsNotNull(UIController, "Mobile UI was not instantiated");
 
-        bool isFiring = MobileUI.IsShooting();
+        bool isFiring = UIController.IsShooting();
         return isFiring;
     }
 }

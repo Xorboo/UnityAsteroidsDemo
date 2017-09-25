@@ -11,6 +11,10 @@ public class GameMenu : BaseMenu
 {
     [SerializeField]
     TextMeshProUGUI ScoreText = null;
+    [SerializeField]
+    TextMeshProUGUI NewWaveText = null;
+    [SerializeField, Range(0f, 10f)]
+    float NewWaveTextDuration = 2f;
 
     [Space(10)]
     [SerializeField]
@@ -24,10 +28,12 @@ public class GameMenu : BaseMenu
     [SerializeField]
     GameObject LifesPrefab = null;
     
+    [Space(10)]
     [SerializeField]
-    MobileUI MobileUI = null;
+    RectTransform RootUITransform = null;
 
     bool HighScoreWasShown;
+    Coroutine WaveTextRoutine = null;
 
 
     #region Behaviours
@@ -36,12 +42,14 @@ public class GameMenu : BaseMenu
         MatchManager.Instance.PlayerHealth.OnChanged += LifesChanged;
         ScoreManager.Instance.Score.OnChanged += ScoreChanged;
         ScoreManager.Instance.OnHighScoreChanged += HighScoreChanged;
+        AsteroidSpawner.Instance.OnNewWaveSpawned += WaveSpawned;
 
         CreateLifes();
         LifesChanged(MatchManager.Instance.PlayerHealth);
         HighScoreWasShown = false;
         HighScoreObject.SetActive(false);
         ScoreChanged(ScoreManager.Instance.Score);
+        HideNewWaveText();
     }
 
     void OnDisable()
@@ -52,17 +60,19 @@ public class GameMenu : BaseMenu
             ScoreManager.Instance.Score.OnChanged -= ScoreChanged;
         if (ScoreManager.Exists())
             ScoreManager.Instance.OnHighScoreChanged -= HighScoreChanged;
+        if (AsteroidSpawner.Exists())
+            AsteroidSpawner.Instance.OnNewWaveSpawned -= WaveSpawned;
     }
     #endregion
 
 
-    public MobileUI SpawnMobileUI()
+    public RectTransform RootUI
     {
-        // Not spawning for this demo, just activating
-        MobileUI.gameObject.SetActive(true);
-        return MobileUI;
+        get { return RootUITransform; }
     }
 
+
+    #region Lifes
     void CreateLifes()
     {
         for(int i = LifesRoot.childCount, n = MatchManager.Instance.InitialHealth; i < n; i++)
@@ -79,8 +89,13 @@ public class GameMenu : BaseMenu
             var life = LifesRoot.GetChild(i);
             life.gameObject.SetActive(i < lifes);
         }
-    }
 
+        HideNewWaveText();
+    }
+    #endregion
+
+
+    #region Score
     void ScoreChanged(int score)
     {
         ScoreText.text = score.ToString();
@@ -95,12 +110,46 @@ public class GameMenu : BaseMenu
         }
     }
 
+
     IEnumerator ShowHighScore()
     {
         HighScoreObject.SetActive(true);
         yield return new WaitForSeconds(HighscoreShowPause);
         HighScoreObject.SetActive(false);
     }
+    #endregion
+
+
+    #region New wave
+    public void WaveSpawned(int waveIndex)
+    {
+        HideNewWaveText();
+
+        NewWaveText.text = String.Format("Wave #{0}", waveIndex);
+        WaveTextRoutine = StartCoroutine(ShowNewWaveText());
+    }
+
+    void HideNewWaveText()
+    {
+        NewWaveText.gameObject.SetActive(false);
+
+        if (WaveTextRoutine != null)
+        {
+            StopCoroutine(WaveTextRoutine);
+            WaveTextRoutine = null;
+        }
+    }
+
+    IEnumerator ShowNewWaveText()
+    {
+        NewWaveText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(NewWaveTextDuration);
+        NewWaveText.gameObject.SetActive(false);
+
+        WaveTextRoutine = null;
+    }
+    #endregion
+
 
     public override void EscapePressed()
     {

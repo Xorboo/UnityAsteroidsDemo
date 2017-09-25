@@ -8,6 +8,13 @@ using Rand = UnityEngine.Random;
 [CreateAssetMenu(fileName = "MovementParameters", menuName = "Asteroids/Movement Parameters")]
 public class MovementController : ScriptableObject
 {
+    [Header("UI for platforms")]
+    [SerializeField]
+    List<CanvasInputPrefab> CanvasUIControllers = null;
+    [SerializeField]
+    CanvasUIBase DefaultUI = null;
+
+    [Header("Movement parameters")]
     [SerializeField, Tooltip("Maximum velocity, units/s")]
     float MaximumVelocity = 10f;
     [SerializeField, Range(0, 100f), Tooltip("Acceleration, units/s^2")]
@@ -27,8 +34,10 @@ public class MovementController : ScriptableObject
 
     public void Init(PlayerMovement ship)
     {
+        var uiController = SpawnUI();
+
         PlayerInput = CreatePlayerInput();
-        PlayerInput.Init();
+        PlayerInput.Init(uiController);
         Clear(ship);
     }
 
@@ -82,4 +91,39 @@ public class MovementController : ScriptableObject
         return new PlayerInputPC();
 #endif
     }
+
+
+    #region UI
+    CanvasUIBase SpawnUI()
+    {
+        var prefab = GetUIPrefab();
+
+        if (prefab != null)
+        {
+            var root = GameManager.Instance.RootUI;
+            var ui = Instantiate(prefab, root);
+            return ui;
+        }
+        else
+            return null;
+    }
+
+    CanvasUIBase GetUIPrefab()
+    {
+        var platform = ApplicationExtensions.Platform;
+        foreach(var ui in CanvasUIControllers)
+        {
+            if (ui.Platform == platform)
+                return ui.Prefab;
+        }
+        return DefaultUI;
+    }
+
+    [Serializable]
+    class CanvasInputPrefab
+    {
+        public CanvasUIBase Prefab = null;
+        public RuntimePlatform Platform = RuntimePlatform.Android;
+    }
+    #endregion
 }

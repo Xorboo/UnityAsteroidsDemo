@@ -7,7 +7,8 @@ using Rand = UnityEngine.Random;
 
 public interface IPlayerInput
 {
-    void Init();
+    void Init(CanvasUIBase uiController);
+
     MovementData GetMoveInput();
     bool IsShooting();
 }

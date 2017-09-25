@@ -11,6 +11,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eb1404edbec1a74d89baaaa3709f008, type: 3}
   m_Name: MovementParameters
   m_EditorClassIdentifier: 
+  CanvasUIControllers:
+  - Prefab: {fileID: 114831607901440088, guid: 7b5021cef6e7154479402de2d837270d, type: 2}
+    Platform: 11
+  - Prefab: {fileID: 114831607901440088, guid: 7b5021cef6e7154479402de2d837270d, type: 2}
+    Platform: 8
+  DefaultUI: {fileID: 114848075275644654, guid: 4a460a44aeca93d43acadb276ae3163f,
+    type: 2}
   MaximumVelocity: 10
   Acceleration: 10
   Deceleration: 0

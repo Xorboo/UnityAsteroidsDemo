@@ -5,7 +5,7 @@ using UnityEngine;
 using Rand = UnityEngine.Random;
 
 
-public class MobileUI : MonoBehaviour
+public class MobileUI : CanvasUIBase
 {
     bool IsLeft, IsRight, IsUp, IsFire;
 
@@ -18,7 +18,7 @@ public class MobileUI : MonoBehaviour
     #endregion
 
 
-    public MovementData GetMovementData()
+    public override MovementData GetMovementData()
     {
         return new MovementData
         {
@@ -27,7 +27,7 @@ public class MobileUI : MonoBehaviour
         };
     }
 
-    public bool IsShooting()
+    public override bool IsShooting()
     {
         return IsFire;
     }

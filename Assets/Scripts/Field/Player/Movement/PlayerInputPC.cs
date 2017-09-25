@@ -7,7 +7,7 @@ using Rand = UnityEngine.Random;
 
 public class PlayerInputPC : IPlayerInput
 {
-    public virtual void Init()
+    public virtual void Init(CanvasUIBase uiController)
     {
     }
 
